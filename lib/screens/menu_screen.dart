@@ -14,16 +14,17 @@ class MenuScreen extends StatelessWidget {
     Coffee(
       id: '2',
       name: 'Cappuccino',
-      description: 'Tejhab és kávé tökéletes keveréke.',
+      description:
+          'A cappuccino egyenlő arányban tartalmaz eszpresszót, gőzölt tejet és tejhabot.',
       imageUrl: 'assets/icons/cappuccino.svg',
-      price: 6.0,
+      price: 15.0,
     ),
     Coffee(
       id: '3',
       name: 'Latte',
       description: 'Tejhab és kávé tökéletes keveréke.',
       imageUrl: 'assets/icons/latte.svg',
-      price: 8.0,
+      price: 18.0,
     ),
   ];
 
