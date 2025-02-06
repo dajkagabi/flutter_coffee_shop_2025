@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coffee_shop_2025/screens/menu_screen.dart'; // Importáld a MenuScreen osztályt
+import 'package:flutter_coffee_shop_2025/screens/menu_screen.dart'; 
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
