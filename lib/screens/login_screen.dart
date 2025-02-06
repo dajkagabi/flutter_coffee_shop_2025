@@ -1,0 +1,1 @@
+//Bejelentkezési, regisztárció, vendég
