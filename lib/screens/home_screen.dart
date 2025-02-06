@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coffee_shop_2025/screens/menu_screen.dart'; // Importáld a MenuScreen osztályt
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -13,7 +14,7 @@ class HomeScreen extends StatelessWidget {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('lib/assets/images/background.jpg'),
+                image: AssetImage('assets/images/background.jpg'),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
                   Colors.black54, // Sötét átlátszóság
@@ -39,7 +40,11 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    // Ide jön a navigáció a menühöz
+                    // Navigálás a menü képernyőre
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MenuScreen()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.brown[700], // Kávébarna gomb
