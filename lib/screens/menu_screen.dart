@@ -12,19 +12,19 @@ class MenuScreen extends StatelessWidget {
         name: 'Espresso',
         description: 'Erős és intenzív kávé.',
         imageUrl: 'assets/icons/espresso.svg',
-        price: 5.0),
+        price: 800),
     Coffee(
         id: '2',
         name: 'Cappuccino',
         description: 'Klasszikus cappuccino.',
         imageUrl: 'assets/icons/cappuccino.svg',
-        price: 15.0),
+        price: 1245),
     Coffee(
         id: '3',
         name: 'Latte',
         description: 'Tejhabos latte.',
         imageUrl: 'assets/icons/latte.svg',
-        price: 18.0),
+        price: 1500),
   ];
 
   MenuScreen({super.key});

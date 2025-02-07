@@ -28,7 +28,7 @@ class CartScreen extends StatelessWidget {
                         onPressed: () => cart.decreaseQuantity(item.id),
                       ),
                       Text(
-                          "\$${(item.price * item.quantity).toStringAsFixed(2)}"),
+                          "${(item.price * item.quantity).toStringAsFixed(0)} Ft"), // Ft-ban jelenik meg
                       IconButton(
                         icon: const Icon(Icons.add),
                         onPressed: () => cart.increaseQuantity(item.id),
@@ -48,7 +48,7 @@ class CartScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () => cart.clearCart(),
                 child: Text(
-                    "Kosár törlése (\$${cart.totalPrice.toStringAsFixed(2)})"),
+                    "Kosár törlése (${cart.totalPrice.toStringAsFixed(0)} Ft)"), // Ft-ban jelenik meg
               ),
             )
           : null,
