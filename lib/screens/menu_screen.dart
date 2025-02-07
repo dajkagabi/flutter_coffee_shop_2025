@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import '../models/coffee.dart';
 import '../services/cart_service.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'cart_screen.dart'; // Importáld a CartScreen-t
+import 'package:intl/intl.dart';
+import 'cart_screen.dart';
 
 class MenuScreen extends StatelessWidget {
   final List<Coffee> coffees = [
@@ -40,6 +41,7 @@ class MenuScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.shopping_cart),
             onPressed: () {
+              // Navigálás a kosárhoz
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const CartScreen()),
@@ -57,7 +59,8 @@ class MenuScreen extends StatelessWidget {
             child: ListTile(
               leading: SvgPicture.asset(coffee.imageUrl, width: 50, height: 50),
               title: Text(coffee.name),
-              subtitle: Text(coffee.description),
+              subtitle: Text(
+                  "${coffee.description}\nÁr: ${NumberFormat.currency(locale: 'hu_HU', symbol: 'Ft').format(coffee.price)}"),
               trailing: ElevatedButton(
                 onPressed: () {
                   cart.addToCart(coffee.id, coffee.name, coffee.price);
