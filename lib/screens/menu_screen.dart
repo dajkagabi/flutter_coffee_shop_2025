@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/coffee.dart';
 import '../services/cart_service.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'cart_screen.dart'; // Importáld a CartScreen-t
 
 class MenuScreen extends StatelessWidget {
   final List<Coffee> coffees = [
@@ -33,7 +34,20 @@ class MenuScreen extends StatelessWidget {
     var cart = Provider.of<CartService>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Kávé Menük')),
+      appBar: AppBar(
+        title: const Text('Kávé Menük'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CartScreen()),
+              );
+            },
+          ),
+        ],
+      ),
       body: ListView.builder(
         itemCount: coffees.length,
         itemBuilder: (ctx, index) {
