@@ -28,7 +28,7 @@ class CartScreen extends StatelessWidget {
                         onPressed: () => cart.decreaseQuantity(item.id),
                       ),
                       Text(
-                          "${(item.price * item.quantity).toStringAsFixed(0)} Ft"), // Ft-ban jelenik meg
+                          "${(item.price * item.quantity).toStringAsFixed(0)} Ft"),
                       IconButton(
                         icon: const Icon(Icons.add),
                         onPressed: () => cart.increaseQuantity(item.id),
@@ -45,10 +45,50 @@ class CartScreen extends StatelessWidget {
       bottomNavigationBar: cart.items.isNotEmpty
           ? Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                onPressed: () => cart.clearCart(),
-                child: Text(
-                    "Kosár törlése (${cart.totalPrice.toStringAsFixed(0)} Ft)"), // Ft-ban jelenik meg
+              child: Row(
+                children: [
+                  // Megrendelés gomb
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Megrendelés elküldése
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                "Megrendelés elküldve: ${cart.totalPrice.toStringAsFixed(0)} Ft"),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                        cart.clearCart(); // Kosár kiürítése
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green, // Zöld gomb
+                        foregroundColor: Colors.white, // Fehér szöveg
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text('Megrendelés'),
+                    ),
+                  ),
+                  const SizedBox(width: 8), // Kis térköz a gombok között
+                  // Kosár törlése gomb
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => cart.clearCart(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red, // Piros gomb
+                        foregroundColor: Colors.white, // Fehér szöveg
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text('Kosár törlése'),
+                    ),
+                  ),
+                ],
               ),
             )
           : null,
