@@ -24,6 +24,23 @@ class CartService with ChangeNotifier {
     notifyListeners();
   }
 
+  void increaseQuantity(String id) {
+    var item = _items.firstWhere((item) => item.id == id);
+    item.quantity++;
+    notifyListeners();
+  }
+
+  void decreaseQuantity(String id) {
+    var item = _items.firstWhere((item) => item.id == id);
+    if (item.quantity > 1) {
+      item.quantity--;
+    } else {
+      _items.removeWhere(
+          (item) => item.id == id); // Ha a mennyiség 1, eltávolítjuk a terméket
+    }
+    notifyListeners();
+  }
+
   void removeFromCart(String id) {
     _items.removeWhere((item) => item.id == id);
     notifyListeners();

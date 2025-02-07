@@ -1,4 +1,3 @@
-//Kosár
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/cart_service.dart';
@@ -21,10 +20,23 @@ class CartScreen extends StatelessWidget {
                 return ListTile(
                   title: Text(item.name),
                   subtitle: Text("Darab: ${item.quantity}"),
-                  trailing: Text(
-                      "\$${(item.price * item.quantity).toStringAsFixed(2)}"),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: () => cart.decreaseQuantity(item.id),
+                      ),
+                      Text(
+                          "\$${(item.price * item.quantity).toStringAsFixed(2)}"),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () => cart.increaseQuantity(item.id),
+                      ),
+                    ],
+                  ),
                   leading: IconButton(
-                    icon: const Icon(Icons.remove_circle),
+                    icon: const Icon(Icons.delete),
                     onPressed: () => cart.removeFromCart(item.id),
                   ),
                 );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coffee_shop_2025/screens/menu_screen.dart'; 
+import 'package:flutter_coffee_shop_2025/screens/menu_screen.dart';
+import 'cart_screen.dart'; // Importáld a CartScreen-t
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -7,6 +8,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Coffee Shop'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CartScreen()),
+              );
+            },
+          ),
+        ],
+      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
