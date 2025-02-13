@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/cart_service.dart';
+import 'order_screen.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -51,15 +52,13 @@ class CartScreen extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        // Megrendelés elküldése
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                "Megrendelés elküldve: ${cart.totalPrice.toStringAsFixed(0)} Ft"),
-                            duration: const Duration(seconds: 2),
+                        // Navigálás az OrderScreen-re
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OrderScreen(cart: cart),
                           ),
                         );
-                        cart.clearCart(); // Kosár kiürítése
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green, // Zöld gomb
