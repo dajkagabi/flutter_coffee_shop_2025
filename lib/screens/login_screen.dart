@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
-import 'home_screen.dart';
+import 'home_screen.dart'; // Főoldal importálása
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
@@ -140,11 +139,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       setState(() => isLoading = true);
                       try {
-                        await authService.signInAsGuest();
+                        // **Ne hívd meg a signInAsGuest metódust**
                         if (!context.mounted) return;
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (_) => const HomeScreen()),
+
+                        // Popup üzenet megjelenítése
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Vendég mód'),
+                              content: const Text(
+                                  'Vendég módban vagy. A hűségprogram nem érhető el.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(
+                                        context); // Bezárja a popup-ot
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
                         );
                       } catch (e) {
                         if (!context.mounted) return;

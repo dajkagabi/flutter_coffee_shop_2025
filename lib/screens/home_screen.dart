@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_coffee_shop_2025/screens/menu_screen.dart';
 import 'package:provider/provider.dart';
-import 'cart_screen.dart';
+
 import '../services/cart_service.dart';
 import 'package:badges/badges.dart' as badges;
+// Bejelentkezési képernyő importálása
+import '../services/auth_service.dart'; // AuthService importálása/ Profilképernyő importálása
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,11 +13,25 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cart = Provider.of<CartService>(context);
+    var authService = Provider.of<AuthService>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Coffee Shop'),
         actions: [
+          // Bejelentkezés ikon
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              if (authService.currentUser != null) {
+                // Ha be van jelentkezve, navigálj a profilképernyőre
+                Navigator.pushNamed(context, '/profile');
+              } else {
+                // Ha nincs bejelentkezve, navigálj a bejelentkezési képernyőre
+                Navigator.pushNamed(context, '/login');
+              }
+            },
+          ),
           // Kosár ikon a badge-el
           badges.Badge(
             position: badges.BadgePosition.topEnd(top: -7, end: -1),
@@ -30,10 +46,7 @@ class HomeScreen extends StatelessWidget {
               icon: const Icon(Icons.shopping_cart),
               onPressed: () {
                 // Navigálás a kosárhoz
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const CartScreen()),
-                );
+                Navigator.pushNamed(context, '/cart');
               },
             ),
           ),

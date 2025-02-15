@@ -1,6 +1,5 @@
-//Firebase Auth Service
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService extends ChangeNotifier {
@@ -8,37 +7,57 @@ class AuthService extends ChangeNotifier {
 
   User? get currentUser => _auth.currentUser;
 
-  // Bejelentkezés e-mail/jelszóval
+  // Bejelentkezés
   Future<void> signIn(String email, String password) async {
-    await _auth.signInWithEmailAndPassword(email: email, password: password);
-    notifyListeners();
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      notifyListeners(); // Értesíti a hallgatókat a változásról
+    } on FirebaseAuthException {
+      rethrow; // Hibát dob, ha a bejelentkezés sikertelen
+    }
   }
 
-  // Regisztráció e-mail/jelszóval
+  // Regisztráció
   Future<void> signUp(String email, String password) async {
-    await _auth.createUserWithEmailAndPassword(
-        email: email, password: password);
-    notifyListeners();
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      notifyListeners(); // Értesíti a hallgatókat a változásról
+    } on FirebaseAuthException {
+      rethrow; // Hibát dob, ha a regisztráció sikertelen
+    }
   }
 
-  // Vendégként bejelentkezés
+  // Vendég mód
   Future<void> signInAsGuest() async {
-    await _auth.signInAnonymously();
-    notifyListeners();
+    try {
+      await _auth.signInAnonymously();
+      notifyListeners(); // Értesíti a hallgatókat a változásról
+    } on FirebaseAuthException {
+      rethrow; // Hibát dob, ha a vendég mód nem működik
+    }
   }
 
   // Elfelejtett jelszó
   Future<void> resetPassword(String email) async {
-    await _auth.sendPasswordResetEmail(email: email);
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException {
+      rethrow; // Hibát dob, ha az email küldése sikertelen
+    }
   }
 
   // Kijelentkezés
   Future<void> signOut() async {
-    await _auth.signOut();
-    notifyListeners();
+    try {
+      await _auth.signOut();
+      notifyListeners(); // Értesíti a hallgatókat a változásról
+    } on FirebaseAuthException {
+      rethrow; // Hibát dob, ha a kijelentkezés sikertelen
+    }
   }
 
-  // Automatikus bejelentkezés (Emlékezzen rám funkció)
+  // Emlékezz rám funkció
   Future<void> saveLoginState(bool rememberMe) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('rememberMe', rememberMe);
