@@ -7,6 +7,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
@@ -123,36 +124,8 @@ class _LoginScreenState extends State<LoginScreen>
                   ],
                 ),
                 TextButton(
-                  onPressed: () async {
-                    if (_loginEmailController.text.isNotEmpty) {
-                      setState(() => isLoading = true);
-                      try {
-                        await authService
-                            .resetPassword(_loginEmailController.text);
-                        if (!context.mounted) return;
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content:
-                                Text('Jelszó-visszaállítási e-mail elküldve.'),
-                          ),
-                        );
-                      } catch (e) {
-                        if (!context.mounted) return;
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Hiba: ${e.toString()}')),
-                        );
-                      } finally {
-                        if (mounted) setState(() => isLoading = false);
-                      }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Kérjük, add meg az e-mail címed.'),
-                        ),
-                      );
-                    }
+                  onPressed: () {
+                    _showForgotPasswordDialog(context, authService);
                   },
                   child: const Text('Elfelejtett jelszó?'),
                 ),
@@ -172,13 +145,13 @@ class _LoginScreenState extends State<LoginScreen>
                       if (rememberMe) {
                         await authService.saveLoginState(true);
                       }
-                      if (!context.mounted) return;
+                      if (!mounted) return;
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (_) => const HomeScreen()),
                       );
                     } catch (e) {
-                      if (!context.mounted) return;
+                      if (!mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Hiba: ${e.toString()}')),
                       );
@@ -262,13 +235,13 @@ class _LoginScreenState extends State<LoginScreen>
                     try {
                       await authService.signUp(_registerEmailController.text,
                           _registerPasswordController.text);
-                      if (!context.mounted) return;
+                      if (!mounted) return;
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (_) => const HomeScreen()),
                       );
                     } catch (e) {
-                      if (!context.mounted) return;
+                      if (!mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Hiba: ${e.toString()}')),
                       );
@@ -282,6 +255,73 @@ class _LoginScreenState extends State<LoginScreen>
           ],
         ),
       ),
+    );
+  }
+
+  void _showForgotPasswordDialog(
+      BuildContext context, AuthService authService) {
+    final emailController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Elfelejtett jelszó'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Kérjük, add meg az email címed!';
+                  }
+                  return null;
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Bezárja a dialógusablakot
+              },
+              child: const Text('Mégse'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (emailController.text.isNotEmpty) {
+                  try {
+                    await authService.resetPassword(emailController.text);
+                    if (!mounted) return;
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Jelszó-visszaállítási e-mail elküldve.'),
+                      ),
+                    );
+                    Navigator.pop(context); // Bezárja a dialógusablakot
+                  } catch (e) {
+                    if (!mounted) return;
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Hiba: ${e.toString()}')),
+                    );
+                  }
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Kérjük, add meg az e-mail címed.'),
+                    ),
+                  );
+                }
+              },
+              child: const Text('Küldés'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
